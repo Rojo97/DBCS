@@ -784,9 +784,15 @@ exists or setup the property manually. For example like this:
         <ant antfile="${project.Ejercicio2Interface}/build.xml" inheritall="false" target="jar">
             <property name="deploy.on.save" value="false"/>
         </ant>
+        <ant antfile="${project.Ejercicio3Interface}/build.xml" inheritall="false" target="jar">
+            <property name="deploy.on.save" value="false"/>
+        </ant>
     </target>
     <target depends="init" if="dist.ear.dir" name="-deps-ear-jar" unless="no.deps">
         <ant antfile="${project.Ejercicio2Interface}/build.xml" inheritall="false" target="jar">
+            <property name="deploy.on.save" value="false"/>
+        </ant>
+        <ant antfile="${project.Ejercicio3Interface}/build.xml" inheritall="false" target="jar">
             <property name="deploy.on.save" value="false"/>
         </ant>
     </target>
@@ -802,16 +808,20 @@ exists or setup the property manually. For example like this:
     <target depends="compile,-library-inclusion-in-archive-weblogic,-library-inclusion-in-archive-by-user" name="library-inclusion-in-archive"/>
     <target if="is.jars.in.ejbjar" name="-library-inclusion-in-archive-by-user">
         <copyfiles files="${reference.Ejercicio2Interface.jar}" todir="${build.classes.dir}"/>
+        <copyfiles files="${reference.Ejercicio3Interface.jar}" todir="${build.classes.dir}"/>
     </target>
     <target if="is.server.weblogic" name="-library-inclusion-in-archive-weblogic">
         <basename file="${reference.Ejercicio2Interface.jar}" property="manifest.reference.Ejercicio2Interface.jar"/>
+        <basename file="${reference.Ejercicio3Interface.jar}" property="manifest.reference.Ejercicio3Interface.jar"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Extension-List" value="jar-1 "/>
+            <attribute name="Extension-List" value="jar-1 jar-2 "/>
             <attribute name="jar-1-Extension-Name" value="${manifest.reference.Ejercicio2Interface.jar}"/>
+            <attribute name="jar-2-Extension-Name" value="${manifest.reference.Ejercicio3Interface.jar}"/>
         </manifest>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
         <copyfiles files="${reference.Ejercicio2Interface.jar}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${reference.Ejercicio3Interface.jar}" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target name="-copy-meta-inf">
@@ -1196,6 +1206,7 @@ exists or setup the property manually. For example like this:
             -->
     <target depends="init" name="deps-clean" unless="no.deps">
         <ant antfile="${project.Ejercicio2Interface}/build.xml" inheritall="false" target="clean"/>
+        <ant antfile="${project.Ejercicio3Interface}/build.xml" inheritall="false" target="clean"/>
     </target>
     <target depends="init" name="-do-clean">
         <delete dir="${build.dir}"/>
