@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://www.netbeans.org/ns/project/1">
-    <type>org.netbeans.modules.j2ee.ejbjarproject</type>
+    <type>org.netbeans.modules.java.j2seproject</type>
     <configuration>
-        <data xmlns="http://www.netbeans.org/ns/j2ee-ejbjarproject/3">
-            <name>EnterpriseApplication3-ejb</name>
-            <minimum-ant-version>1.6.5</minimum-ant-version>
-            <included-library dirs="200">reference.Ejercicio3Interface.jar</included-library>
+        <data xmlns="http://www.netbeans.org/ns/j2se-project/3">
+            <name>JSE4</name>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>
@@ -15,7 +13,7 @@
         </data>
         <references xmlns="http://www.netbeans.org/ns/ant-project-references/1">
             <reference>
-                <foreign-project>Ejercicio3Interface</foreign-project>
+                <foreign-project>Ejercicio4Interface</foreign-project>
                 <artifact-type>jar</artifact-type>
                 <script>build.xml</script>
                 <target>jar</target>
