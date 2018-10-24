@@ -46,7 +46,7 @@ public class ServletAdd extends HttpServlet {
                 carroCompra = lookupCarroCompraRemote();
             }
             carroCompra.addCarro(producto, cantidad);
-            System.err.println(carroCompra.getCarro());
+            //System.err.println(carroCompra.getCarro());
             request.getSession().setAttribute("sesion", carroCompra);
             request.getRequestDispatcher("index.html").forward(request, response);
         }catch(Exception e){
