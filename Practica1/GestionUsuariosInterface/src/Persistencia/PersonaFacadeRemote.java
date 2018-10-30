@@ -1,0 +1,35 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Persistencia;
+
+import Dominio.Persona;
+import java.util.List;
+import javax.ejb.Remote;
+
+/**
+ *
+ * @author Ismael Perez
+ */
+@Remote
+public interface PersonaFacadeRemote {
+
+    void create(Persona persona);
+
+    void edit(Persona persona);
+
+    void remove(Persona persona);
+
+    Persona find(Object id);
+
+    List<Persona> findAll();
+
+    List<Persona> findRange(int[] range);
+
+    int count();
+
+    Persona getPersona(String nif);
+    
+}

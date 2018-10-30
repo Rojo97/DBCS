@@ -3,8 +3,9 @@
     <type>org.netbeans.modules.j2ee.ejbjarproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/j2ee-ejbjarproject/3">
-            <name>GestionUsuarios</name>
+            <name>GestionProductos</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
+            <included-library dirs="200">libs.javaee-api-7.0.classpath</included-library>
             <included-library dirs="200">reference.GestionUsuariosInterface.jar</included-library>
             <source-roots>
                 <root id="src.dir"/>
