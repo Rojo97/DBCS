@@ -45,6 +45,10 @@ public class BeanGestionProductos implements BeanGestionProductosLocal {
         String nif = beanGestionarUsuarios.getNif(login);
         return preferenciaFacade.getPreferencias(nif);
     }
+    @Override
+    public String hola(){
+        return "hola";
+    }
     
     
 }

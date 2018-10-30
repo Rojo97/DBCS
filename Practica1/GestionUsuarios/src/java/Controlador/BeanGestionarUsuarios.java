@@ -5,6 +5,10 @@
  */
 package Controlador;
 
+import Dominio.*;
+import Persistencia.AbonadoFacade;
+import Persistencia.AbonadoFacadeRemote;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
@@ -14,9 +18,17 @@ import javax.ejb.Stateless;
 @Stateless
 public class BeanGestionarUsuarios implements BeanGestionarUsuariosRemote {
 
+    @EJB
+    private AbonadoFacadeRemote abonadoFacade;
+
     @Override
     public boolean isAbonado(String login) {
-        return false;
+        Abonado abonado = abonadoFacade.getAbonado(login);
+        if(abonado != null){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

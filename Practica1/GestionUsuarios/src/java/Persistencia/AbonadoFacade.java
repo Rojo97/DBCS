@@ -9,6 +9,7 @@ import Dominio.Abonado;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,6 +28,13 @@ public class AbonadoFacade extends AbstractFacade<Abonado> implements AbonadoFac
 
     public AbonadoFacade() {
         super(Abonado.class);
+    }
+    @Override
+    public Abonado getAbonado(String login){
+        Query query = em.createNamedQuery("Abonado.findByAbLogin");
+        query.setParameter("abLogin", login);
+        Abonado abonado = (Abonado) query.getSingleResult();
+        return abonado;
     }
     
 }

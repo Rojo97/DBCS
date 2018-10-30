@@ -21,5 +21,7 @@ public interface BeanGestionProductosLocal {
     java.util.List<Referencia> getReferencias(int vinold);
 
     java.util.List<Preferencia> getPrefrencias(String login);
+    
+    String hola();
 
 }
