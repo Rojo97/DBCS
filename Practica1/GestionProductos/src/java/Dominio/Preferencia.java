@@ -22,8 +22,9 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author rojo
+ * Implementación de la Entity Preferencia
+ * @author ismpere
+ * @author vicrojo
  */
 @Entity
 @Table(name = "PREFERENCIA")

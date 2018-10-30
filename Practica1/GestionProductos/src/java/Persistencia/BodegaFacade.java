@@ -11,8 +11,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
- * @author rojo
+ * Implementación de la fachada asociada a la Entity Bodega
+ * @author ismpere
+ * @author vicrojo
  */
 @Stateless
 public class BodegaFacade extends AbstractFacade<Bodega> implements BodegaFacadeLocal {
@@ -20,11 +21,18 @@ public class BodegaFacade extends AbstractFacade<Bodega> implements BodegaFacade
     @PersistenceContext(unitName = "GestionProductosPU")
     private EntityManager em;
 
+    /**
+     * Retorna el EntityManager
+     * @return el Entity Manager de la Entity asociada a la fachada
+     */
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
+    /**
+     * Constructor por defecto de la clase BodegaFacade
+     */
     public BodegaFacade() {
         super(Bodega.class);
     }

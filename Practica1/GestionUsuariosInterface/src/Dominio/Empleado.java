@@ -20,8 +20,9 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author Ismael Perez
+ * Implementación de la Entity Empleado
+ * @author ismpere
+ * @author vicrojo
  */
 @Entity
 @Table(name = "EMPLEADO")

@@ -22,8 +22,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author Ismael Perez
+ * Implementación de la Entity Persona
+ * @author ismpere
+ * @author vicrojo
  */
 @Entity
 @Table(name = "PERSONA")

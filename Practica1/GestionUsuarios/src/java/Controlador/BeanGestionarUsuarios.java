@@ -6,18 +6,16 @@
 package Controlador;
 
 import Dominio.*;
-import Persistencia.AbonadoFacade;
 import Persistencia.AbonadoFacadeRemote;
 import Persistencia.EmpleadoFacadeRemote;
-import Persistencia.PersonaFacade;
 import Persistencia.PersonaFacadeRemote;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
- *
- * @author Ismael Perez
+ * Implementacion de las funciones para la gestión de usuarios
+ * @author ismpere
+ * @author vicrojo
  */
 @Stateless
 public class BeanGestionarUsuarios implements BeanGestionarUsuariosRemote {
@@ -31,6 +29,12 @@ public class BeanGestionarUsuarios implements BeanGestionarUsuariosRemote {
     @EJB
     private AbonadoFacadeRemote abonadoFacade;
 
+    /**
+     * Comprueba si existe un abonado mediante su login
+     * Devuelve true si es un abonado y false si no lo es
+     * @param login el identificador a comprobar
+     * @return un valor booleano de si es o no un abonado
+     */
     @Override
     public boolean isAbonado(String login) {
        try{
@@ -43,6 +47,12 @@ public class BeanGestionarUsuarios implements BeanGestionarUsuariosRemote {
         }
     }
 
+    /**
+     * Comprueba si existe un empleado por login
+     * Devuelve true si es un empleado y false si no lo es
+     * @param login el identificador a comprobar
+     * @return un valor booleano de si es o no un empleado
+     */
     @Override
     public boolean isEmpleado(String login) {
         try{
@@ -57,6 +67,15 @@ public class BeanGestionarUsuarios implements BeanGestionarUsuariosRemote {
             return false;
         }
     }
+    
+    /**
+     * Comprueba si una contraseña es correcta con el login y el tipo de usuario
+     * Devuelve true si la contraseña es correcta y false si no lo es
+     * @param login el identificador del usuario
+     * @param passwd la contraseña del usuario
+     * @param tipoUser el tipo de usuario
+     * @return un valor booleano de si es o no correcta la contraseña
+     */
     @Override
     public boolean isPsswdOK(String login, String passwd, String tipoUser) {
         if(tipoUser.equals("abonado")){
@@ -86,6 +105,12 @@ public class BeanGestionarUsuarios implements BeanGestionarUsuariosRemote {
         }
     }
 
+    /**
+     * Retorna el Nif de un usuario por su login
+     * Si el login no pertenece a ningun usuario, devuelve null
+     * @param login el identificador del usuario
+     * @return el Nif del usuario
+     */
     @Override
     public String getNif(String login) {
         try{
@@ -96,6 +121,16 @@ public class BeanGestionarUsuarios implements BeanGestionarUsuariosRemote {
         }
     }
 
+    /**
+     * Añade un nuevo abonado con todos sus datos
+     * Devuelve true si el abonado de añadido correctamente y false si no se ha añadido
+     * @param nif Nif del abonado
+     * @param nombre nombre del abonado
+     * @param apellidos apellidos del abonado
+     * @param login identificador del abonado
+     * @param passwd contraseña del abonado
+     * @return un valor booleano que representa si se ha añadido o no el abonado
+     */
     @Override
     public boolean addAbonado(String nif, String nombre, String apellidos, String login, String passwd) {
         Persona persona = new Persona(nif);
@@ -107,6 +142,12 @@ public class BeanGestionarUsuarios implements BeanGestionarUsuariosRemote {
         return abonadoFacade.addAbonado(abonado);
     }
 
+    /**
+     * Elimina un abonado por su Nif
+     * Devuelve true si el abonado de ha eliminado y false si no se ha eliminado
+     * @param nif Nif del abonado
+     * @return un valor booleano de si se ha eliminado o no el abonado
+     */
     @Override
     public boolean delAbonado(String nif) {
         return abonadoFacade.delAbonado(nif);

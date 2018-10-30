@@ -11,8 +11,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
- * @author rojo
+ * Implementación de la fachada asociada a la Entity Categoria
+ * @author ismpere
+ * @author vicrojo
  */
 @Stateless
 public class CategoriaFacade extends AbstractFacade<Categoria> implements CategoriaFacadeLocal {
@@ -20,11 +21,18 @@ public class CategoriaFacade extends AbstractFacade<Categoria> implements Catego
     @PersistenceContext(unitName = "GestionProductosPU")
     private EntityManager em;
 
+    /**
+     * Retorna el EntityManager
+     * @return el Entity Manager de la Entity asociada a la fachada
+     */
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
 
+    /**
+     * Constructor por defecto de la clase CategoriaFacade
+     */
     public CategoriaFacade() {
         super(Categoria.class);
     }

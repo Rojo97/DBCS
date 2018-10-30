@@ -20,8 +20,9 @@ import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author rojo
+ * Implementación de la Entity Referencia
+ * @author ismpere
+ * @author vicrojo
  */
 @Entity
 @Table(name = "REFERENCIA")

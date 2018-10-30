@@ -23,8 +23,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author rojo
+ * Implementación de la Entity Bodega
+ * @author ismpere
+ * @author vicrojo
  */
 @Entity
 @Table(name = "BODEGA")
