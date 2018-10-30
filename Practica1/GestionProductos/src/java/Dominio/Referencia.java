@@ -31,7 +31,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Referencia.findByCodigo", query = "SELECT r FROM Referencia r WHERE r.codigo = :codigo")
     , @NamedQuery(name = "Referencia.findByEsporcajas", query = "SELECT r FROM Referencia r WHERE r.esporcajas = :esporcajas")
     , @NamedQuery(name = "Referencia.findByContenido", query = "SELECT r FROM Referencia r WHERE r.contenido = :contenido")
-    , @NamedQuery(name = "Referencia.findByPrecio", query = "SELECT r FROM Referencia r WHERE r.precio = :precio")})
+    , @NamedQuery(name = "Referencia.findByPrecio", query = "SELECT r FROM Referencia r WHERE r.precio = :precio")
+    , @NamedQuery(name = "Referencia.findByVino", query = "SELECT r FROM Referencia r WHERE r.vinoid = :vinoid")})
 public class Referencia implements Serializable {
 
     private static final long serialVersionUID = 1L;

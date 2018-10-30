@@ -30,4 +30,6 @@ public interface PreferenciaFacadeLocal {
 
     int count();
     
+    List<Preferencia> getPreferencias(String nif);
+    
 }

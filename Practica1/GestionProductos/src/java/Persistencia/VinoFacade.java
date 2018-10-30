@@ -5,10 +5,13 @@
  */
 package Persistencia;
 
+import Dominio.Referencia;
 import Dominio.Vino;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +32,12 @@ public class VinoFacade extends AbstractFacade<Vino> implements VinoFacadeLocal 
         super(Vino.class);
     }
     
+    @Override
+    public List<Vino> getVinos(String categoria, String denOrigen){
+        Query query = em.createNamedQuery("Vino.findByCategoriaAndDenOrigen");
+        query.setParameter("categoria", categoria);
+        query.setParameter("denorigen", denOrigen);
+        List<Vino> vinos=(List<Vino>) query.getResultList();
+        return vinos;
+    }
 }

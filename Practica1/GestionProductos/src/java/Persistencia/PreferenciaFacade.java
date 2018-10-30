@@ -6,9 +6,11 @@
 package Persistencia;
 
 import Dominio.Preferencia;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +31,11 @@ public class PreferenciaFacade extends AbstractFacade<Preferencia> implements Pr
         super(Preferencia.class);
     }
     
+    @Override
+    public List<Preferencia> getPreferencias(String nif){
+        Query query = em.createNamedQuery("Preferencia.findByNifabonado");
+        query.setParameter("nifabonado", nif);
+        List<Preferencia> prefrencias=(List<Preferencia>) query.getResultList();
+        return prefrencias;
+    }
 }

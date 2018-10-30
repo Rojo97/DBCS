@@ -6,9 +6,11 @@
 package Persistencia;
 
 import Dominio.Referencia;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,6 +29,14 @@ public class ReferenciaFacade extends AbstractFacade<Referencia> implements Refe
 
     public ReferenciaFacade() {
         super(Referencia.class);
+    }
+    
+    @Override
+    public List<Referencia> getReferencias(int vinoId){
+        Query query = em.createNamedQuery("Referencia.findByVino");
+        query.setParameter("vinoid", Integer.toString(vinoId));
+        List<Referencia> referencias= (List<Referencia>) query.getResultList();
+        return referencias;
     }
     
 }

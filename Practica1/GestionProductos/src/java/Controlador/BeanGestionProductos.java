@@ -6,7 +6,9 @@
 package Controlador;
 
 import Dominio.*;
+import Persistencia.*;
 import java.awt.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
 /**
@@ -16,19 +18,32 @@ import javax.ejb.Stateless;
 @Stateless
 public class BeanGestionProductos implements BeanGestionProductosLocal {
 
+    @EJB
+    private PreferenciaFacadeLocal preferenciaFacade;
+
+    @EJB
+    private BeanGestionarUsuariosRemote beanGestionarUsuarios;
+
+    @EJB
+    private VinoFacadeLocal vinoFacade;
+    
+    @EJB
+    private ReferenciaFacadeLocal referenciaFacade;
+
     @Override
     public java.util.List<Vino> getVinos(String categoria, String denOrigen) {
-        return null;
+        return vinoFacade.getVinos(categoria, denOrigen);
     }
 
     @Override
-    public java.util.List<Referencia> getReferencias(int vinold) {
-        return null;
+    public java.util.List<Referencia> getReferencias(int vinoId) {
+        return referenciaFacade.getReferencias(vinoId);
     }
 
     @Override
     public java.util.List<Preferencia> getPrefrencias(String login) {
-        return null;
+        String nif = beanGestionarUsuarios.getNif(login);
+        return preferenciaFacade.getPreferencias(nif);
     }
     
     

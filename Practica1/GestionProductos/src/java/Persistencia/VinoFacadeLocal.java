@@ -30,4 +30,6 @@ public interface VinoFacadeLocal {
 
     int count();
     
+    List<Vino> getVinos(String categoria, String denOrigen);
+    
 }

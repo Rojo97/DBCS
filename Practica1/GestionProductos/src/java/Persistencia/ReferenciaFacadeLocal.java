@@ -30,4 +30,6 @@ public interface ReferenciaFacadeLocal {
 
     int count();
     
+    List<Referencia> getReferencias(int vinoId);
+    
 }

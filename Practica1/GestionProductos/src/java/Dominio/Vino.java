@@ -35,7 +35,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Vino.findAll", query = "SELECT v FROM Vino v")
     , @NamedQuery(name = "Vino.findById", query = "SELECT v FROM Vino v WHERE v.id = :id")
     , @NamedQuery(name = "Vino.findByNombrecomercial", query = "SELECT v FROM Vino v WHERE v.nombrecomercial = :nombrecomercial")
-    , @NamedQuery(name = "Vino.findByComentario", query = "SELECT v FROM Vino v WHERE v.comentario = :comentario")})
+    , @NamedQuery(name = "Vino.findByComentario", query = "SELECT v FROM Vino v WHERE v.comentario = :comentario")
+    , @NamedQuery(name = "Vino.findByCategoriaAndDenOrigen", query = "SELECT v FROM Vino v WHERE v.categoria.nombre = :categoria AND v.iddenominacion.nombre = :denorigen")})
 public class Vino implements Serializable {
 
     private static final long serialVersionUID = 1L;
