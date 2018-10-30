@@ -29,5 +29,7 @@ public interface PersonaFacadeRemote {
     List<Persona> findRange(int[] range);
 
     int count();
+
+    Persona getPersona(String nif);
     
 }

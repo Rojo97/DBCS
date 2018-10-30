@@ -6,6 +6,8 @@
 package Persistencia;
 
 import Dominio.Abonado;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,10 +33,39 @@ public class AbonadoFacade extends AbstractFacade<Abonado> implements AbonadoFac
     }
     @Override
     public Abonado getAbonado(String login){
-        Query query = em.createNamedQuery("Abonado.findByAbLogin");
-        query.setParameter("abLogin", login);
-        Abonado abonado = (Abonado) query.getSingleResult();
+        Abonado abonado = em.find(Abonado.class, login);
         return abonado;
+    }
+    
+    @Override
+    public boolean addAbonado(Abonado abonado){
+        Abonado abaux = em.find(Abonado.class, abonado.getAbLogin());
+        if(abaux == null){
+            try{
+                em.persist(abonado);
+                return true;
+            } catch(Exception e){
+                return false;
+            }
+        } else {
+            return false;
+        }
+        
+    }
+    
+    @Override 
+    public boolean delAbonado(String nif){
+        boolean encontrado = false;
+        Abonado abonado;
+        List<Abonado> abonados = (List<Abonado>) em.createQuery("SELECT t FROM Abonado t").getResultList();
+        for(int i = 0; i< abonados.size() && encontrado == false; i ++){
+            abonado = abonados.get(i);
+            if(abonado.getAbNif().getNif().equals(nif)){
+                encontrado = true;
+                em.remove(abonado);
+            }
+        }
+        return encontrado;
     }
     
 }

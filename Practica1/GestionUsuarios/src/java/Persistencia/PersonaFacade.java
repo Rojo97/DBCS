@@ -29,4 +29,8 @@ public class PersonaFacade extends AbstractFacade<Persona> implements PersonaFac
         super(Persona.class);
     }
     
+    @Override
+    public Persona getPersona(String nif){
+        return em.find(Persona.class, nif);
+    }
 }

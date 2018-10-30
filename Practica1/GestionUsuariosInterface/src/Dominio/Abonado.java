@@ -7,6 +7,7 @@ package Dominio;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -43,7 +44,7 @@ public class Abonado implements Serializable {
     @Column(name = "AB_PASSWD")
     private String abPasswd;
     @JoinColumn(name = "AB_NIF", referencedColumnName = "NIF")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Persona abNif;
 
     public Abonado() {

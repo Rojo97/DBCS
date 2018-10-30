@@ -31,4 +31,8 @@ public interface AbonadoFacadeRemote {
     int count();
     
     Abonado getAbonado(String login);
+
+    boolean addAbonado(Abonado abonado);
+    
+    boolean delAbonado(String nif);
 }
