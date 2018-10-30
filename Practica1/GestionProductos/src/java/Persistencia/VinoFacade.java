@@ -33,11 +33,14 @@ public class VinoFacade extends AbstractFacade<Vino> implements VinoFacadeLocal 
     }
     
     @Override
-    public List<Vino> getVinos(String categoria, String denOrigen){
+    public List<Vino> getVinos(){
         Query query = em.createNamedQuery("Vino.findByCategoriaAndDenOrigen");
-        query.setParameter("categoria", categoria);
-        query.setParameter("denorigen", denOrigen);
         List<Vino> vinos=(List<Vino>) query.getResultList();
         return vinos;
+    }
+    
+    @Override
+    public Vino getVinoPorId(String id){
+        return em.find(Vino.class, id);
     }
 }
