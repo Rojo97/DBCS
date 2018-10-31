@@ -32,6 +32,6 @@ public interface VinoFacadeLocal {
     
     List<Vino> getVinos();
     
-    Vino getVinoPorId(String id);
+    Vino getVinoPorId(int id);
     
 }
