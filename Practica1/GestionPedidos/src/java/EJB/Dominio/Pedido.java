@@ -23,8 +23,8 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
- * @author rojo
+ * @author vicrojo
+ * @author ismpere
  */
 @Entity
 @Table(name = "PEDIDO")

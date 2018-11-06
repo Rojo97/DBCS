@@ -22,8 +22,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
- * @author rojo
+ * @author vicrojo
+ * @author ismpere
  */
 @Entity
 @Table(name = "ESTADO_PEDIDO")

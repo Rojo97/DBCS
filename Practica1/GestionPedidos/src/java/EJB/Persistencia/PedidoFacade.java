@@ -8,15 +8,15 @@ package EJB.Persistencia;
 import Controlador.BeanGestionarUsuariosRemote;
 import EJB.Dominio.EstadoPedido;
 import EJB.Dominio.Pedido;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- *
- * @author rojo
+ * Implementacion de PedidoFacadeLocal
+ * @author vicrojo
+ * @author ismpere
  */
 @Stateless
 public class PedidoFacade extends AbstractFacade<Pedido> implements PedidoFacadeLocal {
@@ -36,6 +36,15 @@ public class PedidoFacade extends AbstractFacade<Pedido> implements PedidoFacade
         super(Pedido.class);
     }
     
+    /**
+     * Añade a la base de datos el pedido con las caracteristicas proporcionadas
+     * @param login del usuario
+     * @param fecha del pedido
+     * @param importe del pedido
+     * @param referencia del vino
+     * @param estado del pedido
+     * @return true si se ha añadido correctamente, false en caso contrario
+     */
     @Override
     public boolean addPedido(String login, String fecha, float importe, int referencia, EstadoPedido estado){
         Pedido pedido = new Pedido();
@@ -52,6 +61,12 @@ public class PedidoFacade extends AbstractFacade<Pedido> implements PedidoFacade
         }
     }
     
+    /**
+     * Cambia el estado del pedido elegido
+     * @param numPedido pedido a cambiar
+     * @param estado nuevo
+     * @return true si se ha cambiado correctamente, false en caso contrario
+     */
     @Override
     public boolean updatePedido(int numPedido, EstadoPedido estado){
         Pedido pedido = em.find(Pedido.class, numPedido);

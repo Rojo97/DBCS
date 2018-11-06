@@ -6,13 +6,12 @@
 package EJB.Persistencia;
 
 import EJB.Dominio.EstadoPedido;
-import EJB.Dominio.Pedido;
 import java.util.List;
 import javax.ejb.Local;
 
 /**
- *
- * @author rojo
+ * @author vicrojo
+ * @author ismpere
  */
 @Local
 public interface EstadoPedidoFacadeLocal {
@@ -31,6 +30,11 @@ public interface EstadoPedidoFacadeLocal {
 
     int count();
 
+    /**
+     * Busca el EstadoPedido correspondiente a la cadena dada
+     * @param cadenaEstado nombre del estado
+     * @return EstadoPedido con la cadena proporcionada
+     */
     EstadoPedido getEstado(String cadenaEstado);
     
 }
