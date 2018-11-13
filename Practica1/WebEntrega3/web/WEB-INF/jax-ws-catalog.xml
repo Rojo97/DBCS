@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://gamusino-pro:8080/GestionPedidosService/GestionPedidosService" uri="wsdl/gamusino-pro_8080/GestionPedidosService/GestionPedidosService.xml"/>
+    <system systemId="http://localhost:8080/GestionPedidosService/GestionPedidosService?wsdl" uri="wsdl/localhost_8080/GestionPedidosService/GestionPedidosService.wsdl"/>
+    <system systemId="http://localhost:8080/GestionPedidosService/GestionPedidosService?xsd=1" uri="wsdl/localhost_8080/GestionPedidosService/GestionPedidosService.xsd_1.xsd"/>
+</catalog>

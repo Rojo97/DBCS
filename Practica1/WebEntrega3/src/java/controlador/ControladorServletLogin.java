@@ -22,12 +22,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.WebServiceRef;
 
 /**
  *
  * @author Ismael Perez
  */
 public class ControladorServletLogin extends HttpServlet {
+
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/GestionPedidosService/GestionPedidosService.wsdl")
+    private GestionPedidosService_Service service;
 
     @EJB
     private BeanGestionProductosLocal beanGestionProductos;
@@ -96,8 +100,9 @@ public class ControladorServletLogin extends HttpServlet {
             String login = (String) request.getSession().getAttribute("login");
             
             String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+            System.err.println(date);
 
-            //addPedido(login, date, r.getPrecio(), r.getCodigo());
+            addPedido(login, date, r.getPrecio(), r.getCodigo());
         }
         
         request.getRequestDispatcher("pedidoRealizado.jsp").forward(request, response);
@@ -204,5 +209,12 @@ public class ControladorServletLogin extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private boolean addPedido(java.lang.String login, java.lang.String fecha, float importe, int referencia) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        controlador.GestionPedidosService port = service.getGestionPedidosServicePort();
+        return port.addPedido(login, fecha, importe, referencia);
+    }
 
 }
