@@ -33,6 +33,7 @@
             <% } %>
             
             <button type="submit" value="PEDIDO" name="pedido"> Realizar pedido </button>
+            <button type="submit" value="CERRARSESION" name="cerrarSesion"> CerrarSesion </button>
         </form>
     </body>
 </html>

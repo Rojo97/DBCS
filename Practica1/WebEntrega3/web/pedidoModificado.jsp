@@ -1,6 +1,6 @@
 <%-- 
-    Document   : opcionesEmpleado
-    Created on : 13-nov-2018, 22:46:21
+    Document   : pedidoModificado
+    Created on : 13-nov-2018, 23:06:11
     Author     : Ismael Perez
 --%>
 
@@ -12,11 +12,12 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Elige la opcion</h1>
-        <form>
-            <button type="submit" value="EDITPEDIDOS" name="editPedidos"> Editar pedidos </button>
-            <button type="submit" value="EDITUSUARIOS" name="editUsuarios"> Editar usuarios </button>
+        <%String modificado = (String)request.getAttribute("editado");%>
+        <h1>Pedido modificado: <%=modificado%></h1>
+        
+        <form>  
+            <button type="submit" value="VEROPCIONES" name="opcionesEmpleado"> Volver a las opciones </button>
             <button type="submit" value="CERRARSESION" name="cerrarSesion"> CerrarSesion </button>
-        </form>
+         </form>
     </body>
 </html>

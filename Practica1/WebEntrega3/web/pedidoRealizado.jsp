@@ -16,6 +16,7 @@
         
         <form action="Servlet">
             <button type="submit" value="VINOS" name="muestraVinos"> Volver a los vinos </button>
+            <button type="submit" value="CERRARSESION" name="cerrarSesion"> CerrarSesion </button>
         </form>
     </body>
 </html>

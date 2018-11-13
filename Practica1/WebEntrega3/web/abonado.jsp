@@ -30,6 +30,7 @@
             <% } %>
             
             <button type="submit" value="CARRITO" name="carrito"> Ver el carrito </button>
+            <button type="submit" value="CERRARSESION" name="cerrarSesion"> CerrarSesion </button>
         </form>
     </body>
 </html>
