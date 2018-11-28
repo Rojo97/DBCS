@@ -58,7 +58,16 @@ public class VinoFacade extends AbstractFacade<Vino> implements VinoFacadeLocal 
      * @return vino el cual tiene por id el pasado como argumento
      */
     @Override
-    public Vino getVinoPorId(String id){
-        return em.find(Vino.class, id);
+    public Vino getVinoPorId(int id){
+        boolean encontrado = false;
+        Vino vino = null;
+        List<Vino> vinos = (List<Vino>) em.createQuery("SELECT t FROM Vino t").getResultList();
+        for(int i = 0; i< vinos.size() && encontrado == false; i ++){
+            vino = vinos.get(i);
+            if(vino.getId() == id){
+                encontrado = true;
+            }
+        }
+        return vino;
     }
 }

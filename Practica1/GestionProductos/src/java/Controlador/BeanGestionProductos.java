@@ -61,7 +61,7 @@ public class BeanGestionProductos implements BeanGestionProductosLocal {
      */
     @Override
     public List<Referencia> getReferencias(int vinoId) {
-        Vino vino = vinoFacade.getVinoPorId(Integer.toString(vinoId));
+        Vino vino = vinoFacade.getVinoPorId(vinoId);
         if(vino != null){
             return (List<Referencia>) vino.getReferenciaCollection();  
         } else {
