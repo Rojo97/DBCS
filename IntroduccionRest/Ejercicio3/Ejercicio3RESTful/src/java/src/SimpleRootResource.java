@@ -11,6 +11,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 
@@ -52,6 +53,17 @@ public class SimpleRootResource {
     @PUT
     @Consumes({"text/plain", "application/json"})
     public void putText(String content) {
+        System.out.println("Argumento: " + content);
+    }
+    
+        /**
+     * POST method for updating or creating an instance of SimpleRootResource
+     * @param content representation for the resource
+     * @return an HTTP response with content of the updated or created resource.
+     */
+    @POST
+    @Consumes({"text/plain", "application/json"})
+    public void postText(String content) {
         System.out.println("Argumento: " + content);
     }
 }

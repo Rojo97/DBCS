@@ -5,7 +5,6 @@
  */
 package src;
 
-import javax.swing.text.html.HTML;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
