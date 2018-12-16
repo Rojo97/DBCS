@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author rojo
  */
 @Stateless
-public class PreferenciaFacade extends AbstractFacade<Preferencia> {
+public class PreferenciaFacade extends AbstractFacade<Preferencia> implements PreferenciaFacadeLocal {
 
     @PersistenceContext(unitName = "RestPU")
     private EntityManager em;

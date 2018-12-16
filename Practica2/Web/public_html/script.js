@@ -5,11 +5,11 @@ angular.module("practicaApp", [])
 
             $scope.loginAbonado = function (id) {
                 $scope.estado = "abonado";
-                console.log("abonado");
+                console.log(id);
             }
 
             $scope.loginEmpleado = function (id) {
                 $scope.estado = "empleado";
-                console.log("empleado");
+                console.log(id);
             }
         });

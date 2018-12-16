@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author rojo
  */
 @Stateless
-public class AbonadoFacade extends AbstractFacade<Abonado> {
+public class AbonadoFacade extends AbstractFacade<Abonado> implements AbonadoFacadeLocal {
 
     @PersistenceContext(unitName = "RestPU")
     private EntityManager em;
@@ -29,4 +29,15 @@ public class AbonadoFacade extends AbstractFacade<Abonado> {
         super(Abonado.class);
     }
     
+        /**
+     * Devuelve un abonado por su login
+     * Si no se ha encontrado ningún abonado con ese login, devuelve null
+     * @param login identificador del abonado
+     * @return Abonado que tiene por login el introducido como parámetro
+     */
+    @Override
+    public Abonado getAbonado(String login){
+        Abonado abonado = em.find(Abonado.class, login);
+        return abonado;
+    }
 }

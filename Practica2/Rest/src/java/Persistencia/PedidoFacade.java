@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author rojo
  */
 @Stateless
-public class PedidoFacade extends AbstractFacade<Pedido> {
+public class PedidoFacade extends AbstractFacade<Pedido> implements PedidoFacadeLocal {
 
     @PersistenceContext(unitName = "RestPU")
     private EntityManager em;

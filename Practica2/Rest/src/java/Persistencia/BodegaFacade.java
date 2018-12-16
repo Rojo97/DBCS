@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author rojo
  */
 @Stateless
-public class BodegaFacade extends AbstractFacade<Bodega> {
+public class BodegaFacade extends AbstractFacade<Bodega> implements BodegaFacadeLocal {
 
     @PersistenceContext(unitName = "RestPU")
     private EntityManager em;
