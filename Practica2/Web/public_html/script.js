@@ -84,7 +84,35 @@ angular.module("practicaApp", [])
                 }).success(function (data) {
                     console.log("exito: " + data);
                     item.wiki = data[3][0];
-                    alert(data);
+                }, function (response) {
+                    console.log("error: " + response.status);
+                });
+            }
+            
+            $scope.precioReferenciaVino = function (id, item) {
+                $http({
+                    method: "GET",
+                    url: baseUrl + "/vino/"+id+"/referencia"
+                }).success(function (data) {
+                    console.log("exito: " + data);
+                    item.precio = data.precio;
+                    item.referencia = data.codigo;
+                }, function (response) {
+                    console.log("error: " + response.status);
+                    item.precio = "NOT_FOUND";
+                });
+            }
+            
+            $scope.comprar = function(id ,item){
+                $http({
+                    method: "POST",
+                    url: baseUrl + "/empleado/" + id + "/addPedido",
+                    data: {
+                        "referencia": item.referencia
+                    }
+                }).then(function (response) {
+                    console.log("exito: " + response.status);
+                    alert("Pedido realizado");
                 }, function (response) {
                     console.log("error: " + response.status);
                 });

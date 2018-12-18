@@ -29,4 +29,10 @@ public class VinoFacade extends AbstractFacade<Vino> implements VinoFacadeLocal 
         super(Vino.class);
     }
     
+    @Override
+    public Vino getVino(String id){
+        Vino vino = em.find(Vino.class, Integer.valueOf(id));
+        return vino;
+    }
+    
 }

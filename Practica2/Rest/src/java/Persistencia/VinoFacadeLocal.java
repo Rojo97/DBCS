@@ -30,4 +30,6 @@ public interface VinoFacadeLocal {
 
     int count();
     
+    Vino getVino(String id);
+    
 }

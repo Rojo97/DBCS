@@ -7,6 +7,7 @@ package Persistencia;
 
 import Dominio.EstadoPedido;
 import Dominio.Pedido;
+import Dominio.Referencia;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -48,13 +49,14 @@ public class PedidoFacade extends AbstractFacade<Pedido> implements PedidoFacade
      * @return true si se ha añadido correctamente, false en caso contrario
      */
     @Override
-    public boolean addPedido(String login, String fecha, float importe, int referencia, EstadoPedido estado){
+    public boolean addPedido(String login, String fecha, int referencia, EstadoPedido estado){
         Pedido pedido = new Pedido();
         pedido.setPeNif(abonadoFacade.getAbonado(login));
         pedido.setFecha(fecha);
-        pedido.setImporte(importe);
+        Referencia referenciaObj = referenciaFacade.find(referencia);
+        pedido.setImporte(referenciaObj.getPrecio());
         pedido.setPeEstado(estado);
-        pedido.setPeReferencia(referenciaFacade.find(referencia));
+        pedido.setPeReferencia(referenciaObj);
         try{
             em.persist(pedido);
             return true;

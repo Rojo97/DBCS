@@ -81,6 +81,7 @@
                             <tr>
                                 <th>Nombre</th>
                                 <th>Comentario</th>
+                                <th>Precio</th>
                                 <th>Mas info</th>
                                 <th></th>
                             </tr>
@@ -89,8 +90,9 @@
                             <tr ng-repeat="item in vinos">
                                 <td>{{item.nombrecomercial}}</td>
                                 <td>{{item.comentario}}</td>
+                                <td ng-init="precioReferenciaVino(item.id, item)">{{item.precio}}</td>
                                 <td ng-init="wikipedia(item.nombrecomercial, item)">{{item.wiki}}</td>
-                                <td><button>Comprar</button></td>
+                                <td><button ng-click="comprar(id, item)">Comprar</button></td>
                             </tr>
                         </tbody>
                     </table>

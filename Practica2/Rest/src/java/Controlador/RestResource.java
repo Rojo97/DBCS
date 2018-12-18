@@ -9,12 +9,16 @@ import Dominio.Abonado;
 import Dominio.EstadoPedido;
 import Dominio.Pedido;
 import Dominio.Preferencia;
+import Dominio.Referencia;
 import Dominio.Vino;
 import Persistencia.AbonadoFacadeLocal;
 import Persistencia.EstadoPedidoFacadeLocal;
 import Persistencia.PedidoFacadeLocal;
 import Persistencia.VinoFacadeLocal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -100,13 +104,16 @@ public class RestResource {
     @Produces("application/json")
     public Response addPedido(@PathParam("id") String id, JsonObject pedido) {
         String login = id;
-        String fecha = pedido.getString("fecha");
-        float importe = Float.valueOf(pedido.getString("importe"));
+        DateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        String fecha = formato.format(date);
         int referencia = pedido.getInt("referencia");
         EstadoPedido estado = estadoPedidoFacade.getEstado("pendiente");
-        boolean correcto = pedidoFacade.addPedido(login, fecha, (float) importe, referencia, estado);
+        boolean correcto = pedidoFacade.addPedido(login, fecha, referencia, estado);
         if (correcto) {
-            return Response.status(Response.Status.CREATED).build();
+            ResponseBuilder respuesta = Response.status(Response.Status.CREATED);
+            respuesta.header("Access-Control-Allow-Origin", "http://localhost:8383");
+            return respuesta.build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
@@ -182,6 +189,26 @@ public class RestResource {
         } else {
             pedidoFacade.remove(pedido);
             return Response.status(Response.Status.OK).build();
+        }
+    }
+    
+    @Path("vino/{id}/referencia")
+    @GET
+    @Produces("application/json")
+    public Response getReferencia(@PathParam("id") String id) {
+        Vino vino = vinoFacade.getVino(id);
+        List<Referencia> referencias = (List<Referencia>) vino.getReferenciaCollection();
+        ResponseBuilder respuesta = Response.status(Response.Status.ACCEPTED);
+        if (referencias == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } else {
+            Referencia referencia = referencias.get(0);
+            respuesta.header("Access-Control-Allow-Origin", "http://localhost:8383");
+            respuesta.header("Access-Control-Expose-Headers", "*");
+            respuesta.type("application/json");
+            respuesta.entity(referencia);
+            return respuesta.build();
+
         }
     }
 
