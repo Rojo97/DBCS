@@ -63,7 +63,7 @@ public class PedidoFacade extends AbstractFacade<Pedido> implements PedidoFacade
         }
     }
     
-            /**
+    /**
      * Cambia el estado del pedido elegido
      * @param numPedido pedido a cambiar
      * @param estado nuevo
@@ -75,6 +75,7 @@ public class PedidoFacade extends AbstractFacade<Pedido> implements PedidoFacade
         pedido.setPeEstado(estado);
         try{
             em.merge(pedido);
+            em.flush();
             return true;
         }catch(Exception e){
             return false;

@@ -156,8 +156,9 @@ public class RestResource {
     @PUT
     @Consumes("application/json")
     @Produces("application/json")
-    public Response modPedido(@PathParam("id") int id, String estado) {
-        EstadoPedido estadoPedido = estadoPedidoFacade.getEstado(estado);
+    public Response modPedido(@PathParam("id") int id, JsonObject estado) {
+        EstadoPedido estadoPedido = estadoPedidoFacade.getEstado(estado.getString("estado"));
+        System.out.println(estadoPedido.getEstado());
         boolean correcto = pedidoFacade.updatePedido(id, estadoPedido);
         if(estadoPedido == null || correcto == false ){
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -167,8 +168,8 @@ public class RestResource {
     }
     
     @DELETE
-    @Path("empleado/pedidos/{id}/delete")
-    @Consumes("text/plain")
+    @Path("empleado/pedidos/{id}")
+    @Consumes("application/json")
     @Produces("application/json")
     public Response deletePedido(@PathParam("id") int id) {
         Pedido pedido = pedidoFacade.find(id);
