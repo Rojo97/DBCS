@@ -5,6 +5,7 @@
  */
 package Persistencia;
 
+import Dominio.EstadoPedido;
 import Dominio.Pedido;
 import java.util.List;
 import javax.ejb.Local;
@@ -29,5 +30,7 @@ public interface PedidoFacadeLocal {
     List<Pedido> findRange(int[] range);
 
     int count();
+    
+    boolean addPedido(String login, String fecha, float importe, int referencia, EstadoPedido estado);
     
 }

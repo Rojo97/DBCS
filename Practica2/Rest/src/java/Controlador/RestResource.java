@@ -6,9 +6,16 @@
 package Controlador;
 
 import Dominio.Abonado;
+import Dominio.EstadoPedido;
+import Dominio.Pedido;
+import Dominio.Preferencia;
 import Persistencia.AbonadoFacadeLocal;
+import Persistencia.EstadoPedidoFacadeLocal;
+import Persistencia.PedidoFacadeLocal;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.json.JsonObject;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.ws.rs.core.Context;
@@ -16,12 +23,16 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import jdk.nashorn.internal.parser.JSONParser;
+import org.json.simple.JSONObject;
 
 /**
  * REST Web Service
@@ -30,6 +41,10 @@ import javax.ws.rs.core.Response.ResponseBuilder;
  */
 @Path("Rest")
 public class RestResource {
+
+    PedidoFacadeLocal pedidoFacade = lookupPedidoFacadeLocal();
+
+    EstadoPedidoFacadeLocal estadoPedidoFacade = lookupEstadoPedidoFacadeLocal();
 
     AbonadoFacadeLocal abonadoFacade = lookupAbonadoFacadeLocal();
 
@@ -65,6 +80,77 @@ public class RestResource {
     public void putJson(String content) {
     }
 
+    /**
+     * {
+     * "id" : "uno", "fecha" : "2015-02-11", "importe": "25.26", "referencia" :
+     * 1 }
+     *
+     * @param pedido
+     * @return
+     */
+    @Path("addPedido")
+    @POST
+    @Consumes("application/json")
+    @Produces("application/json")
+    public Response addPedido(JsonObject pedido) {
+        String login = pedido.getString("id");
+        String fecha = pedido.getString("fecha");
+        float importe = Float.valueOf(pedido.getString("importe"));
+        int referencia = pedido.getInt("referencia");
+        EstadoPedido estado = estadoPedidoFacade.getEstado("pendiente");
+        boolean correcto = pedidoFacade.addPedido(login, fecha, (float) importe, referencia, estado);
+        if (correcto) {
+            return Response.status(Response.Status.ACCEPTED).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+    }
+
+    @Path("pedidos/pendientes")
+    @GET
+    @Produces("application/json")
+    public Response getPedidosPendientes() {
+        ResponseBuilder respuesta = Response.status(Response.Status.ACCEPTED);
+        EstadoPedido estado = estadoPedidoFacade.getEstado("pendiente");
+        List<Pedido> pedidosList = (List<Pedido>) estado.getPedidoCollection();
+        Pedido[] pedidos = new Pedido[pedidosList.size()];
+        for (int i = 0; i < pedidosList.size(); i++) {
+            pedidos[i] = pedidosList.get(i);
+        }
+        System.err.println(pedidosList.size());
+        if (estado == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        respuesta.header("Access-Control-Allow-Origin", "http://localhost:8383");
+        respuesta.header("Access-Control-Expose-Headers", "*");
+        respuesta.type("application/json");
+        respuesta.entity(pedidos);
+        return respuesta.build();
+    }
+
+    @Path("Preferencias/{id}")
+    @GET
+    @Produces("application/json")
+    public Response getPreferenciasId(@PathParam("id") String id) {
+        Abonado abonado = abonadoFacade.getAbonado(id);
+        ResponseBuilder respuesta = Response.status(Response.Status.ACCEPTED);
+        if (abonado == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } else {
+            List<Preferencia> preferenciasList = (List<Preferencia>) abonado.getPreferenciaCollection();
+            Preferencia[] preferencias = new Preferencia[preferenciasList.size()];
+            for (int i = 0; i < preferenciasList.size(); i++) {
+                preferencias[i] = preferenciasList.get(i);
+            }
+            respuesta.header("Access-Control-Allow-Origin", "http://localhost:8383");
+            respuesta.header("Access-Control-Expose-Headers", "*");
+            respuesta.type("application/json");
+            respuesta.entity(preferencias);
+            return respuesta.build();
+
+        }
+    }
+
     @Path("isAbonado")
     @GET
     @Produces("application/json")
@@ -75,7 +161,7 @@ public class RestResource {
             if (abonado == null) {
                 return Response.status(Response.Status.NOT_FOUND).build();
             }
-            respuesta.header("Access-Control-Allow-Origin","http://localhost:8383");
+            respuesta.header("Access-Control-Allow-Origin", "http://localhost:8383");
             respuesta.header("Access-Control-Expose-Headers", "*");
             respuesta.type("application/json");
             respuesta.entity(abonado);
@@ -89,6 +175,26 @@ public class RestResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (AbonadoFacadeLocal) c.lookup("java:global/Rest/AbonadoFacade!Persistencia.AbonadoFacadeLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private EstadoPedidoFacadeLocal lookupEstadoPedidoFacadeLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (EstadoPedidoFacadeLocal) c.lookup("java:global/Rest/EstadoPedidoFacade!Persistencia.EstadoPedidoFacadeLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private PedidoFacadeLocal lookupPedidoFacadeLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (PedidoFacadeLocal) c.lookup("java:global/Rest/PedidoFacade!Persistencia.PedidoFacadeLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

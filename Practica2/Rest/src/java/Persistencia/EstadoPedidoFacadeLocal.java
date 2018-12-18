@@ -30,4 +30,6 @@ public interface EstadoPedidoFacadeLocal {
 
     int count();
     
+    EstadoPedido getEstado(String cadenaEstado);
+    
 }

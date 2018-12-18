@@ -5,7 +5,9 @@
  */
 package Persistencia;
 
+import Dominio.EstadoPedido;
 import Dominio.Pedido;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,6 +19,12 @@ import javax.persistence.PersistenceContext;
 @Stateless
 public class PedidoFacade extends AbstractFacade<Pedido> implements PedidoFacadeLocal {
 
+    @EJB
+    private ReferenciaFacadeLocal referenciaFacade;
+
+    @EJB
+    private AbonadoFacadeLocal abonadoFacade;
+
     @PersistenceContext(unitName = "RestPU")
     private EntityManager em;
 
@@ -27,6 +35,32 @@ public class PedidoFacade extends AbstractFacade<Pedido> implements PedidoFacade
 
     public PedidoFacade() {
         super(Pedido.class);
+    }
+    
+    
+    /**
+     * Añade a la base de datos el pedido con las caracteristicas proporcionadas
+     * @param login del usuario
+     * @param fecha del pedido
+     * @param importe del pedido
+     * @param referencia del vino
+     * @param estado del pedido
+     * @return true si se ha añadido correctamente, false en caso contrario
+     */
+    @Override
+    public boolean addPedido(String login, String fecha, float importe, int referencia, EstadoPedido estado){
+        Pedido pedido = new Pedido();
+        pedido.setPeNif(abonadoFacade.getAbonado(login));
+        pedido.setFecha(fecha);
+        pedido.setImporte(importe);
+        pedido.setPeEstado(estado);
+        pedido.setPeReferencia(referenciaFacade.find(referencia));
+        try{
+            em.persist(pedido);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
     }
     
 }

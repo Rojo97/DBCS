@@ -9,6 +9,7 @@ import Dominio.EstadoPedido;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +30,20 @@ public class EstadoPedidoFacade extends AbstractFacade<EstadoPedido> implements 
         super(EstadoPedido.class);
     }
     
+    /**
+     * Busca el EstadoPedido correspondiente a la cadena dada
+     * @param cadenaEstado nombre del estado
+     * @return EstadoPedido con la cadena proporcionada
+     */
+    @Override
+    public EstadoPedido getEstado(String cadenaEstado){
+        Query query = em.createNamedQuery("EstadoPedido.findByEstado");
+        query.setParameter("estado", cadenaEstado);
+        try{
+            EstadoPedido estado = (EstadoPedido) query.getSingleResult();
+            return estado;
+        }catch(Exception e){
+            return null;
+        }
+    }
 }

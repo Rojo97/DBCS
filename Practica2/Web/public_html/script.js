@@ -3,13 +3,11 @@ angular.module("practicaApp", [])
         .controller("appCtrl", function ($scope, $http, baseUrl) { // Inyectamos recursos
             $scope.estado = "login";
 
-            $scope.loginAbonado = function (id) {
+            $scope.loginAbonado = function () {
                 $scope.estado = "abonado";
-                console.log(id);
             }
 
-            $scope.loginEmpleado = function (id) {
+            $scope.loginEmpleado = function () {
                 $scope.estado = "empleado";
-                console.log(id);
             }
         });
