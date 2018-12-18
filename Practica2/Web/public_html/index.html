@@ -27,8 +27,7 @@
                 <button ng-click="loginAbonado(id)">abonado</button>
                 <button ng-click="loginEmpleado()">empleado</button>
             </div>
-            <div ng-show="estado == 'empleado'" class="panel panel-primary">
-                
+            <div ng-show="estado == 'empleado'" class="panel panel-primary">   
                 <table class="table table-striped table-bordered">
                     <thead>
                         <tr>
@@ -54,6 +53,48 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            <div ng-show="estado == 'abonado'" class="panel panel-primary">
+                <h3>Preferencias</h3>
+                <div class="panel panel-primary">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Categoria</th>
+                                <th>Denominacion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in respuesta">
+                                <td>{{item.id}}</td>
+                                <td>{{item.categoria.nombre}}</td>
+                                <td>{{item.iddenominacion.nombre}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <h3>Vinos</h3>
+                <div class="panel panel-primary">
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Comentario</th>
+                                <th>Mas info</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in vinos">
+                                <td>{{item.nombrecomercial}}</td>
+                                <td>{{item.comentario}}</td>
+                                <td ng-init="wikipedia(item.nombrecomercial, item)">{{item.wiki}}</td>
+                                <td><button>Comprar</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <button ng-click="login()" ng-show="estado != 'login'">Inicio</button>
         </div>

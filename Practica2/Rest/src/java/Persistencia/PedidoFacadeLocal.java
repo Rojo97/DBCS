@@ -9,7 +9,6 @@ import Dominio.EstadoPedido;
 import Dominio.Pedido;
 import java.util.List;
 import javax.ejb.Local;
-import javax.persistence.EntityManager;
 
 /**
  *

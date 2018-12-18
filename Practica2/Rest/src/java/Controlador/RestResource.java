@@ -9,9 +9,12 @@ import Dominio.Abonado;
 import Dominio.EstadoPedido;
 import Dominio.Pedido;
 import Dominio.Preferencia;
+import Dominio.Vino;
 import Persistencia.AbonadoFacadeLocal;
 import Persistencia.EstadoPedidoFacadeLocal;
 import Persistencia.PedidoFacadeLocal;
+import Persistencia.VinoFacadeLocal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +45,8 @@ import org.json.simple.JSONObject;
  */
 @Path("Rest")
 public class RestResource {
+
+    VinoFacadeLocal vinoFacade = lookupVinoFacadeLocal();
 
     PedidoFacadeLocal pedidoFacade = lookupPedidoFacadeLocal();
 
@@ -158,47 +163,65 @@ public class RestResource {
     @Produces("application/json")
     public Response modPedido(@PathParam("id") int id, JsonObject estado) {
         EstadoPedido estadoPedido = estadoPedidoFacade.getEstado(estado.getString("estado"));
-        System.out.println(estadoPedido.getEstado());
         boolean correcto = pedidoFacade.updatePedido(id, estadoPedido);
-        if(estadoPedido == null || correcto == false ){
+        if (estadoPedido == null || correcto == false) {
             return Response.status(Response.Status.NOT_FOUND).build();
-        }else {
+        } else {
             return Response.status(Response.Status.OK).build();
         }
     }
-    
+
     @DELETE
     @Path("empleado/pedidos/{id}")
     @Consumes("application/json")
     @Produces("application/json")
     public Response deletePedido(@PathParam("id") int id) {
         Pedido pedido = pedidoFacade.find(id);
-        if(pedido == null){
+        if (pedido == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
-        }else {
+        } else {
             pedidoFacade.remove(pedido);
             return Response.status(Response.Status.OK).build();
         }
     }
 
-    @Path("isAbonado")
+    /**
+     * Devuelve una lista de vinos por su categoría y denominación de origen Si
+     * no encuentra ningun vino con esas características devuelve una lista
+     * vacía
+     *
+     * @param categoria categoría de los vinos
+     * @param denOrigen denominación de origen de los vinos
+     * @return una lista con los vinos que cumplen esas dos características
+     */
+    @Path("abonado/{id}/preferencias/vinos")
     @GET
     @Produces("application/json")
-    public Response isAbonado(@QueryParam("id") String id) {
-        ResponseBuilder respuesta = Response.status(Response.Status.ACCEPTED);
-        try {
-            Abonado abonado = abonadoFacade.getAbonado(id);
-            if (abonado == null) {
-                return Response.status(Response.Status.NOT_FOUND).build();
-            }
-            respuesta.header("Access-Control-Allow-Origin", "http://localhost:8383");
-            respuesta.header("Access-Control-Expose-Headers", "*");
-            respuesta.type("application/json");
-            respuesta.entity(abonado);
-            return respuesta.build();
-        } catch (Exception e) {
+    public Response getVinosAbonado(@PathParam("id") String id) {
+        Abonado abonado = abonadoFacade.getAbonado(id);
+        if (abonado == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
+        List<Preferencia> preferenciasList = (List<Preferencia>) abonado.getPreferenciaCollection();
+        List<Vino> vinos = new ArrayList<Vino>();
+        for (int i = 0; i < preferenciasList.size(); i++) {
+            List<Vino> vinotemp = getVinos(preferenciasList.get(i).getCategoria().getNombre(), preferenciasList.get(i).getIddenominacion().getNombre());
+            for (int j = 0; j < vinotemp.size(); j++) {
+                if (!(vinos.contains(vinotemp.get(j)))) {
+                    vinos.add(vinotemp.get(j));
+                }
+            }
+        }
+        Vino[] vinosArray = new Vino[vinos.size()];
+        for(int i = 0; i<vinos.size(); i++){
+            vinosArray[i]=vinos.get(i);
+        }
+        ResponseBuilder respuesta = Response.status(Response.Status.ACCEPTED);
+        respuesta.header("Access-Control-Allow-Origin", "http://localhost:8383");
+        respuesta.header("Access-Control-Expose-Headers", "*");
+        respuesta.type("application/json");
+        respuesta.entity(vinosArray);
+        return respuesta.build();
     }
 
     private AbonadoFacadeLocal lookupAbonadoFacadeLocal() {
@@ -225,6 +248,29 @@ public class RestResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (PedidoFacadeLocal) c.lookup("java:global/Rest/PedidoFacade!Persistencia.PedidoFacadeLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    public List<Vino> getVinos(String categoria, String denOrigen) {
+        List<Vino> vinos = vinoFacade.findAll();
+        List<Vino> vinosFiltrado = new ArrayList<>();
+        Vino vino;
+        for (int i = 0; i < vinos.size(); i++) {
+            vino = vinos.get(i);
+            if (vino.getCategoria().getNombre().equals(categoria) && vino.getIddenominacion().getNombre().equals(denOrigen)) {
+                vinosFiltrado.add(vino);
+            }
+        }
+        return vinosFiltrado;
+    }
+
+    private VinoFacadeLocal lookupVinoFacadeLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (VinoFacadeLocal) c.lookup("java:global/Rest/VinoFacade!Persistencia.VinoFacadeLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
