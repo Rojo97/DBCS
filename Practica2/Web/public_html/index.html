@@ -24,8 +24,8 @@
             <h3 class="panel-heading">Products</h3>
             <div ng-show="estado == 'login'" class="panel panel-primary">
                 Identificador: <input type="text" ng-model="id"/>
-                <button ng-click="loginAbonado(id)">abonado</button>
-                <button ng-click="loginEmpleado()">empleado</button>
+                <button class="btn btn-primary" ng-click="loginAbonado(id)">abonado</button>
+                <button class="btn btn-primary" ng-click="loginEmpleado()">empleado</button>
             </div>
             <div ng-show="estado == 'empleado'" class="panel panel-primary">   
                 <table class="table table-striped table-bordered">
@@ -92,13 +92,13 @@
                                 <td>{{item.comentario}}</td>
                                 <td ng-init="precioReferenciaVino(item.id, item)">{{item.precio}}</td>
                                 <td ng-init="wikipedia(item.nombrecomercial, item)">{{item.wiki}}</td>
-                                <td><button ng-click="comprar(id, item)">Comprar</button></td>
+                                <td><button  class="btn btn-xs btn-primary" ng-click="comprar(id, item)">Comprar</button></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <button ng-click="login()" ng-show="estado != 'login'">Inicio</button>
+            <button class="btn btn-primary" ng-click="login()" ng-show="estado != 'login'">Cerrar sesion</button>
         </div>
     </body>
 </html>

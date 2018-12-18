@@ -45,7 +45,8 @@ import org.json.simple.JSONObject;
 /**
  * REST Web Service
  *
- * @author rojo
+ * @author vicrojo
+ * @author ismpere
  */
 @Path("Rest")
 public class RestResource {
@@ -91,12 +92,9 @@ public class RestResource {
     }
 
     /**
-     * {
-     * "id" : "uno", "fecha" : "2015-02-11", "importe": "25.26", "referencia" :
-     * 1 }
-     *
-     * @param pedido
-     * @return
+     * Aniade un pedido a la BD
+     * @param pedido con la referencia del mismo
+     * @return 201 si se ha creado, 404 en otro caso
      */
     @Path("/abonado/{id}/addPedido")
     @POST
@@ -119,6 +117,10 @@ public class RestResource {
         }
     }
 
+    /**
+     * Obtine los pedidos con estado pendiente
+     * @return pedidos
+     */
     @Path("empleado/pedidosPendientes")
     @GET
     @Produces("application/json")
@@ -141,6 +143,11 @@ public class RestResource {
         return respuesta.build();
     }
 
+    /**
+     * Obtiene las preferencias de un usuario
+     * @param id
+     * @return preferencias
+     */
     @Path("abonado/{id}/preferencias")
     @GET
     @Produces("application/json")
@@ -164,6 +171,12 @@ public class RestResource {
         }
     }
 
+    /**
+     * Cambia el estado de un pedido por otro
+     * @param id del pedido
+     * @param estado a poner
+     * @return 404 si no hay pedido, 200 si se ha cambiado
+     */
     @Path("empleado/pedidos/{id}")
     @PUT
     @Consumes("application/json")
@@ -178,6 +191,11 @@ public class RestResource {
         }
     }
 
+    /**
+     * Elimina un pedido de la DB
+     * @param id del pedido
+     * @return 404 si no encuentra el pedido, 200 si se ha podido borrar
+     */
     @DELETE
     @Path("empleado/pedidos/{id}")
     @Consumes("application/json")
@@ -192,6 +210,11 @@ public class RestResource {
         }
     }
     
+    /**
+     * Obtiene la referencia de un vino
+     * @param id del vino
+     * @return referencia
+     */
     @Path("vino/{id}/referencia")
     @GET
     @Produces("application/json")
@@ -213,13 +236,9 @@ public class RestResource {
     }
 
     /**
-     * Devuelve una lista de vinos por su categoría y denominación de origen Si
-     * no encuentra ningun vino con esas características devuelve una lista
-     * vacía
-     *
-     * @param categoria categoría de los vinos
-     * @param denOrigen denominación de origen de los vinos
-     * @return una lista con los vinos que cumplen esas dos características
+     * Obtinene los vinos que coinciden con las preferecias del abonado
+     * @param id del abonado
+     * @return vinos
      */
     @Path("abonado/{id}/preferencias/vinos")
     @GET
@@ -249,6 +268,25 @@ public class RestResource {
         respuesta.type("application/json");
         respuesta.entity(vinosArray);
         return respuesta.build();
+    }
+    
+        /**
+     * Obtinene los vinos correspondientes a una categoria y a una denominacion de origen
+     * @param categoria categoria
+     * @param denOrigen origen
+     * @return Lista de vinos
+     */
+    public List<Vino> getVinos(String categoria, String denOrigen) {
+        List<Vino> vinos = vinoFacade.findAll();
+        List<Vino> vinosFiltrado = new ArrayList<>();
+        Vino vino;
+        for (int i = 0; i < vinos.size(); i++) {
+            vino = vinos.get(i);
+            if (vino.getCategoria().getNombre().equals(categoria) && vino.getIddenominacion().getNombre().equals(denOrigen)) {
+                vinosFiltrado.add(vino);
+            }
+        }
+        return vinosFiltrado;
     }
 
     private AbonadoFacadeLocal lookupAbonadoFacadeLocal() {
@@ -280,19 +318,8 @@ public class RestResource {
             throw new RuntimeException(ne);
         }
     }
+    
 
-    public List<Vino> getVinos(String categoria, String denOrigen) {
-        List<Vino> vinos = vinoFacade.findAll();
-        List<Vino> vinosFiltrado = new ArrayList<>();
-        Vino vino;
-        for (int i = 0; i < vinos.size(); i++) {
-            vino = vinos.get(i);
-            if (vino.getCategoria().getNombre().equals(categoria) && vino.getIddenominacion().getNombre().equals(denOrigen)) {
-                vinosFiltrado.add(vino);
-            }
-        }
-        return vinosFiltrado;
-    }
 
     private VinoFacadeLocal lookupVinoFacadeLocal() {
         try {

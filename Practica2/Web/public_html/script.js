@@ -3,11 +3,11 @@ angular.module("practicaApp", [])
         .controller("appCtrl", function ($scope, $http, baseUrl) { // Inyectamos recursos
             $scope.estado = "login";
 
-            $scope.login = function () {
+            $scope.login = function () { //devuelve el estado a el login
                 $scope.estado = "login";
             }
 
-            $scope.loginAbonado = function (id) {
+            $scope.loginAbonado = function (id) { //Obtienene los vinos y referencias del abonado y cambia el estado de la pagina
                 $http({
                     method: "GET",
                     url: baseUrl + "/abonado/"+id+"/preferencias"
@@ -31,7 +31,7 @@ angular.module("practicaApp", [])
                 $scope.estado = "abonado";
             }
 
-            $scope.loginEmpleado = function () {
+            $scope.loginEmpleado = function () { //Obtiene pedidos pendientes y cambia estado
                 $http({
                     method: "GET",
                     url: baseUrl + "/empleado/pedidosPendientes"
@@ -46,7 +46,7 @@ angular.module("practicaApp", [])
                 $scope.estado = "empleado";
             }
 
-            $scope.editaPedido = function (estado, id) {
+            $scope.editaPedido = function (estado, id) { //Edita el estado de un pedido y refresca la vista
                 $http({
                     method: "PUT",
                     url: baseUrl + "/empleado/pedidos/" + id,
@@ -62,7 +62,7 @@ angular.module("practicaApp", [])
                 });
             }
 
-            $scope.deletePedido = function (id) {
+            $scope.deletePedido = function (id) { //Elimina un pedido
                 $http({
                     method: "DELETE",
                     url: baseUrl + "/empleado/pedidos/" + id
@@ -77,7 +77,7 @@ angular.module("practicaApp", [])
 
             }
             
-            $scope.wikipedia = function (nombre, item) {
+            $scope.wikipedia = function (nombre, item) { //Hace una consulta a la api de wikipedia y asigna al item un enlace de la misma si lo encientra
                 $http({
                     method: "GET",
                     url: "https://en.wikipedia.org/w/api.php?action=opensearch&search="+nombre+"&limit=4&format=json"
@@ -89,7 +89,7 @@ angular.module("practicaApp", [])
                 });
             }
             
-            $scope.precioReferenciaVino = function (id, item) {
+            $scope.precioReferenciaVino = function (id, item) { //Obtinene el precio del vino y se lo asigna al item
                 $http({
                     method: "GET",
                     url: baseUrl + "/vino/"+id+"/referencia"
@@ -103,10 +103,10 @@ angular.module("practicaApp", [])
                 });
             }
             
-            $scope.comprar = function(id ,item){
+            $scope.comprar = function(id ,item){ //Crea un pedido del vino seleccionado
                 $http({
                     method: "POST",
-                    url: baseUrl + "/empleado/" + id + "/addPedido",
+                    url: baseUrl + "/abonado/" + id + "/addPedido",
                     data: {
                         "referencia": item.referencia
                     }
