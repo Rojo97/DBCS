@@ -22,6 +22,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -88,37 +89,37 @@ public class RestResource {
      * @param pedido
      * @return
      */
-    @Path("addPedido")
+    @Path("/abonado/{id}/addPedido")
     @POST
     @Consumes("application/json")
     @Produces("application/json")
-    public Response addPedido(JsonObject pedido) {
-        String login = pedido.getString("id");
+    public Response addPedido(@PathParam("id") String id, JsonObject pedido) {
+        String login = id;
         String fecha = pedido.getString("fecha");
         float importe = Float.valueOf(pedido.getString("importe"));
         int referencia = pedido.getInt("referencia");
         EstadoPedido estado = estadoPedidoFacade.getEstado("pendiente");
         boolean correcto = pedidoFacade.addPedido(login, fecha, (float) importe, referencia, estado);
         if (correcto) {
-            return Response.status(Response.Status.ACCEPTED).build();
+            return Response.status(Response.Status.CREATED).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
     }
 
-    @Path("pedidos/pendientes")
+    @Path("empleado/pedidosPendientes")
     @GET
     @Produces("application/json")
     public Response getPedidosPendientes() {
         ResponseBuilder respuesta = Response.status(Response.Status.ACCEPTED);
-        EstadoPedido estado = estadoPedidoFacade.getEstado("pendiente");
-        List<Pedido> pedidosList = (List<Pedido>) estado.getPedidoCollection();
+        EstadoPedido estadoPedido = estadoPedidoFacade.getEstado("pendiente");
+        List<Pedido> pedidosList = (List<Pedido>) estadoPedido.getPedidoCollection();
         Pedido[] pedidos = new Pedido[pedidosList.size()];
         for (int i = 0; i < pedidosList.size(); i++) {
             pedidos[i] = pedidosList.get(i);
         }
         System.err.println(pedidosList.size());
-        if (estado == null) {
+        if (pedidosList == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         respuesta.header("Access-Control-Allow-Origin", "http://localhost:8383");
@@ -128,7 +129,7 @@ public class RestResource {
         return respuesta.build();
     }
 
-    @Path("Preferencias/{id}")
+    @Path("abonado/{id}/preferencias")
     @GET
     @Produces("application/json")
     public Response getPreferenciasId(@PathParam("id") String id) {
@@ -148,6 +149,34 @@ public class RestResource {
             respuesta.entity(preferencias);
             return respuesta.build();
 
+        }
+    }
+
+    @Path("empleado/pedidos/{id}")
+    @PUT
+    @Consumes("application/json")
+    @Produces("application/json")
+    public Response modPedido(@PathParam("id") int id, String estado) {
+        EstadoPedido estadoPedido = estadoPedidoFacade.getEstado(estado);
+        boolean correcto = pedidoFacade.updatePedido(id, estadoPedido);
+        if(estadoPedido == null || correcto == false ){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }else {
+            return Response.status(Response.Status.OK).build();
+        }
+    }
+    
+    @DELETE
+    @Path("empleado/pedidos/{id}/delete")
+    @Consumes("text/plain")
+    @Produces("application/json")
+    public Response deletePedido(@PathParam("id") int id) {
+        Pedido pedido = pedidoFacade.find(id);
+        if(pedido == null){
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }else {
+            pedidoFacade.remove(pedido);
+            return Response.status(Response.Status.OK).build();
         }
     }
 

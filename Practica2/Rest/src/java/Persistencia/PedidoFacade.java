@@ -63,4 +63,22 @@ public class PedidoFacade extends AbstractFacade<Pedido> implements PedidoFacade
         }
     }
     
+            /**
+     * Cambia el estado del pedido elegido
+     * @param numPedido pedido a cambiar
+     * @param estado nuevo
+     * @return true si se ha cambiado correctamente, false en caso contrario
+     */
+    @Override
+    public boolean updatePedido(int numPedido, EstadoPedido estado){
+        Pedido pedido = em.find(Pedido.class, numPedido);
+        pedido.setPeEstado(estado);
+        try{
+            em.merge(pedido);
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+    
 }

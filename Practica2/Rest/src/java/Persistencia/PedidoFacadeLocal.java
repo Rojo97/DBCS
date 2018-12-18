@@ -33,4 +33,6 @@ public interface PedidoFacadeLocal {
     
     boolean addPedido(String login, String fecha, float importe, int referencia, EstadoPedido estado);
     
+    boolean updatePedido(int numPedido, EstadoPedido estado);
+    
 }

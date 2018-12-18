@@ -28,5 +28,6 @@ public class PersonaFacade extends AbstractFacade<Persona> implements PersonaFac
     public PersonaFacade() {
         super(Persona.class);
     }
+   
     
 }

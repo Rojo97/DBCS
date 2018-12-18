@@ -1,18 +1,63 @@
+
 <!DOCTYPE html>
 <html ng-app="practicaApp">
     <head>
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+        <title>Ejemplo Angular</title>
+        <!-- biblioteca angular -->
+        <script
+        src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+        <!-- Bootstrap -->
+        <link rel="stylesheet"
+              href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- jQuery library -->
+        <script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script
+        src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <!-- Nuestro fichero Angular -->
         <script src="script.js"></script>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body ng-controller="appCtrl">
-        <div ng-show="estado == 'login'">
-            Identificador: <input type="text" ng-model="id"/>
-            <button ng-click="loginAbonado(id)">abonado</button>
-            <button ng-click="loginEmpleado(id)">empleado</button>
-        </div>
-        
-        <div ng-controller="empleado">
-            
+        <div class="panel panel-primary">
+            <h3 class="panel-heading">Products</h3>
+            <div ng-show="estado == 'login'" class="panel panel-primary">
+                Identificador: <input type="text" ng-model="id"/>
+                <button ng-click="loginAbonado(id)">abonado</button>
+                <button ng-click="loginEmpleado()">empleado</button>
+            </div>
+            <div ng-show="estado == 'empleado'" class="panel panel-primary">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Estado</th>
+                            <th>Importe</th>
+                            <th>Fecha</th>
+                            <th>NIF</th>
+                            <th>Referencia</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in respuesta">
+                            <td>{{item.peId}}</td>
+                            <td>{{item.peEstado.estado}}</td>
+                            <td>{{item.importe}}</td>
+                            <td>{{item.fecha}}</td>
+                            <td>{{item.peNif.abNif.nif}}</td>
+                            <td>{{item.peReferencia.codigo}}</td>
+                            <td class="text-center">
+                                <button class="btn btn-xs btn-primary"
+                                        ng-click="deleteProduct(item)">Delete</button>
+                                <button class="btn btn-xs btn-primary"
+                                        ng-click="editOrCreateProduct(item)">Edit</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </body>
 </html>
